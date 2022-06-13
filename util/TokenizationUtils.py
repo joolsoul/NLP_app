@@ -1,4 +1,4 @@
-PUNCTUATION = "!@#№$;%:&^*\"\'().,/<>{}[]\\|-—_=+"
+patterns = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#№$;%:&^*\"\'(),/<>{}[]\\|-—_=+"
 
 
 def sentence_tokenize(text: str):
@@ -51,18 +51,16 @@ def remove_dots(words: list):
     remove_empty_values_from_list(words, '')
     for index in range(len(words)):
         word = words[index]
-        first_char = word[0]
-        last_char = word[-1]
-        if first_char in PUNCTUATION:
-            word = remove_char(word, 0)
-        if last_char in PUNCTUATION and last_char != '.':
-            word = remove_char(word, len(word) - 1)
-        if last_char == '.':
+        if word[-1] == '.':
             if index == len(words) - 1:
                 word = remove_char(word, len(word) - 1)
             else:
                 if words[index + 1][0].isupper():
                     word = remove_char(word, len(word) - 1)
+        for char in word:
+            if char in patterns:
+                word = word.replace(char, '')
+
         words[index] = word
 
 
