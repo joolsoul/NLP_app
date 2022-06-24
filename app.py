@@ -68,17 +68,32 @@ def get_part_of_speech(part_of_speech):
     return None
 
 
+def check_input():
+    pass
+
+
 @app.route('/')
 def start():
-    text = "к.т.н. — канDSдидат3 стали технsических техническую техническое н2аук. По-моему."
+    text = "В наших лесах живут соловьи. Там часто звучат соловьиные трели. " \
+           "Соловьи вьют гнезда на сучьях деревьев. Летом у соловьев появляются птенцы. " \
+           "Малыши пищат. Они всегда голодны. Весь день летают родители и ищут пищу птенчикам. Осенью соловьи улетают на далекий юг."
     words = text_process(text)
-    #return render_template('result_page.html', text=text, words=words)
-    return render_template('start_page.html')
+    # return render_template('result_page.html', text=text, words=words)
+    return render_template('index.html')
 
 
-@app.route('/result')
+@app.route('/result', methods=['GET', 'POST'])
 def result():
-    pass
+    if request.method == 'GET':
+        return render_template("result_page.html")
+    text = None  # TODO get text from context and convert to str. Need to check input field or file input.
+    words = text_process(text)
+    return render_template('result_page.html', text=text, words=words)
+
+
+@app.route('/about')
+def about():  # TODO fill page
+    return render_template("about.html")
 
 
 if __name__ == '__main__':
