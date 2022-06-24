@@ -1,8 +1,10 @@
+import os
 from enum import Enum
 
 import pymorphy2
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template
 from util import TokenizationUtils as Tokenization
+from util import FileUtils
 
 app = Flask(__name__)
 
@@ -36,12 +38,15 @@ class Word():
     def __str__(self):
         return self.normal_form + '|' + self.part_of_speech + '|' + str(self.number_of_entries)
 
+    def __repr__(self):
+        return repr((self.normal_form, self.part_of_speech, self.number_of_entries))
+
 
 def text_process(text: str):
     tokens = Tokenization.word_tokenize(text)
     morph = pymorphy2.MorphAnalyzer()
-    tags = {}  # атрибуты каждого слова (начальная форма, часть речи, кол-во вхождений
-    words = []  # массив с готовыми векторами
+    tags = {}
+    words = []
 
     for token in tokens:
         word = morph.parse(token)[0]
@@ -59,9 +64,18 @@ def text_process(text: str):
     return words
 
 
+def bubble(array):
+    for i in range(len(array)):
+        for j in range(len(array) - i - 1):
+            if array[j].number_of_entries < array[j + 1].number_of_entries:
+                buff = array[j]
+                array[j] = array[j + 1]
+                array[j + 1] = buff
+
+
 def get_part_of_speech(part_of_speech):
     if part_of_speech is None:
-        return "Не определено"
+        return "Not defined"
     for current_part in Part_of_speech:
         if current_part.name == part_of_speech:
             return current_part.value
@@ -69,31 +83,43 @@ def get_part_of_speech(part_of_speech):
 
 
 def check_input():
-    pass
+    FileUtils.write_to_file("input", " ", "w")
+    if request.form.get("input_textarea") == '':
+        uploaded_file = request.files['input_file']
+        if uploaded_file.filename != '':
+            uploaded_file.save(os.path.join('static/input'))
+    else:
+        uploaded_file = request.files['input_file']
+        argument = 'w'
+        if uploaded_file.filename != '':
+            uploaded_file.save(os.path.join('static/input'))
+            argument = 'a'
+            FileUtils.write_to_file("input", ' ', argument)
+        input_text = request.form.get("input_textarea")
+        FileUtils.write_to_file("input", input_text, argument)
 
 
 @app.route('/')
 def start():
-    text = "В наших лесах живут соловьи. Там часто звучат соловьиные трели. " \
-           "Соловьи вьют гнезда на сучьях деревьев. Летом у соловьев появляются птенцы. " \
-           "Малыши пищат. Они всегда голодны. Весь день летают родители и ищут пищу птенчикам. Осенью соловьи улетают на далекий юг."
-    words = text_process(text)
-    # return render_template('result_page.html', text=text, words=words)
-    return render_template('index.html')
+    return render_template('start_page.html')
 
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():
     if request.method == 'GET':
         return render_template("result_page.html")
-    text = None  # TODO get text from context and convert to str. Need to check input field or file input.
+
+    check_input()
+    text = FileUtils.read_from_file("input")
     words = text_process(text)
+    bubble(words)
+
     return render_template('result_page.html', text=text, words=words)
 
 
 @app.route('/about')
-def about():  # TODO fill page
-    return render_template("about.html")
+def about():
+    return render_template("about_page.html")
 
 
 if __name__ == '__main__':

@@ -1,31 +1,35 @@
 {% extends "base_page.html" %}
 {% block title %}
-Result page
+    Result page
 {% endblock %}
-{% block body %}
+{% block content %}
     {% block text %}
-        <div class="text-uppercase">
-        Input text:
+        <div class="input__text">
+            Input text:
         </div>
-        {{ text }}
+        <div class="main__text">
+            {{ text }}
+        </div>
     {% endblock %}
     <hr>
-<table id="data" class="table table-striped">
-    <thead>
-      <tr>
-        <th>The initial form of the word</th>
-        <th>Part of speech</th>
-        <th>Number of entries in the text</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for word in words %}
-        <tr>
-          <td>{{ word.normal_form }}</td>
-          <td>{{ word.part_of_speech }}</td>
-          <td>{{ word.number_of_entries }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <div class="table__text">
+        <table id="data" class="table table-striped">
+            <thead>
+            <tr>
+                <th>The initial form of the word</th>
+                <th>Part of speech</th>
+                <th>Number of entries in the text</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for word in words %}
+                <tr>
+                    <td>{{ word.normal_form }}</td>
+                    <td>{{ word.part_of_speech }}</td>
+                    <td>{{ word.number_of_entries }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

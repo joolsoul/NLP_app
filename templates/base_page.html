@@ -1,25 +1,49 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="/static/images/icon.svg">
 </head>
-<body {% block color %}{% endblock %}>
-<div class="container">
-<div class="d-flex justify-content-center flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
-  <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
-  <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
-</svg>
-        <span class="fs-4">Natural Language Processing</span>
-      </a>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <div class="container">
+            <div class="header__top">
+                <a href="/" class="header__logo"><img src="/static/images/logo.svg" alt="Logo"></a>
+                <a href="/" class="header__title">Natural Language Processing</a>
+                <div class="header__inner">
+                    <a href="about" class="header__about">About</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        {% block content %}{% endblock %}
     </div>
-        {% block body %}{% endblock %}
+
+    <footer class="footer">
+        <div class="container">
+            <div class="copyright__wrapper">
+                <div class="copyright">
+                    © 2022 NLP by Ivan Kudinov
+                </div>
+                <div class="footer__link">
+                    <a href="https://github.com/joolsoul" target="_blank" class="footer__logo"><img
+                            src="/static/images/github.svg" alt="Logo"></a>
+                    <a href="https://e.mail.ru/compose/" target="_blank" class="footer__logo"><img
+                            src="/static/images/mail.svg" alt="Logo"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>
 </body>
 </html>

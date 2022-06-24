@@ -1,4 +1,4 @@
-patterns = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#№$;%:&^*\"\'(),/<>{}[]\\|—_=+"
+patterns = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?@#№$;%:&^*\"\'(),/<>{}[]\\|—_=+"
 
 
 def sentence_tokenize(text: str):
@@ -33,22 +33,19 @@ def check_upper_case(sentence):
 
 def word_tokenize(text: str):
     words = text.split(' ')
-    remove_patterns(words)
-    remove_empty_values_from_list(words, '')
+    words = remove_patterns(words)
+    words = remove_empty_values_from_list(words, ['', '.'])
     return words
 
 
-def remove_empty_values_from_list(input_list, value):
-    indexes = []
-    for index in range(len(input_list)):
-        if input_list[index] == value:
-            indexes.append(index)
-    for index_to_remove in indexes:
-        input_list.pop(index_to_remove)
+def remove_empty_values_from_list(input_list, values):
+    for value in values:
+        input_list = list(filter(value.__ne__, input_list))
+    return input_list
 
 
 def remove_patterns(words: list):
-    remove_empty_values_from_list(words, '')
+    words = remove_empty_values_from_list(words, [''])
     for index in range(len(words)):
         word = words[index]
         if word[-1] == '.':
@@ -62,6 +59,7 @@ def remove_patterns(words: list):
                 word = word.replace(char, '')
 
         words[index] = word
+    return words
 
 
 def remove_char(word, index):
